@@ -6,7 +6,7 @@
 /*   By: mkovoor <mkovoor@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/05 13:01:04 by mkovoor           #+#    #+#             */
-/*   Updated: 2022/09/09 11:25:54 by mkovoor          ###   ########.fr       */
+/*   Updated: 2022/11/17 09:41:35 by mkovoor          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ t_queue	*ft_queue_new(int index)
 	return (new);
 }
 
-void ft_queue_delete(t_queue **queue)
+void	ft_queue_delete(t_queue **queue)
 {
-	t_queue *temp;
-	
+	t_queue	*temp;
+
 	if (!(*queue))
 		return ;
-	while(*queue)
+	while (*queue)
 	{
 		temp = *queue;
 		*queue = (*queue)->next;
@@ -57,16 +57,46 @@ void ft_queue_delete(t_queue **queue)
 	*queue = NULL;
 }
 
-void ft_queue_print(t_queue *queue)
+int	pop_queue(t_queue **queue)
 {
-	t_queue *temp;
+	int		temp;
+	t_queue	*ptr;
 
-	temp = queue;
-	while(temp)
+	if (queue != NULL)
 	{
-		printf("%d,", temp->index);
-		temp = temp->next;
+		ptr = *queue;
+		temp = ptr ->index;
+		*queue = ptr->next;
+		return (temp);
 	}
-	printf("\n");
+	return (-1);
 }
 
+void	ft_visit(char *str, int position, t_map *map, t_queue **queue)
+{
+	if (str[position] == '0' || str[position] == 'C')
+	{
+		if (str[position] == 'C')
+			map->collected_C++;
+		ft_queue_add_back(queue, ft_queue_new(position));
+		str[position] = 'V';
+	}
+	else if (str[position] == 'E')
+	{
+		map->valid_exit++;
+		str[position] = '1';
+	}	
+}
+
+// void ft_queue_print(t_queue *queue)
+// {
+// 	t_queue *temp;
+
+// 	temp = queue;
+// 	while(temp)
+// 	{
+// 		printf("%d,", temp->index);
+// 		temp = temp->next;
+// 	}
+// 	printf("\n");
+// }
